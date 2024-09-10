@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard';
 import LogView from './components/LogView';
 
 const App = () => {
+
   return (
     <Router>
       <div>

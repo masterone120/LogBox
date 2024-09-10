@@ -11,7 +11,7 @@ const LogView = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://192.168.11.131:5000/api');
+        const response = await axios.get('http://localhost:5000/data');
         setData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -50,16 +50,16 @@ const LogView = () => {
         onChange={handleSearch}
         className="mb-4 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-500"
       />
-      <table className="min-w-full bg-white border border-gray-300">
+      <table className="table-fixed w-full bg-white border border-gray-300">
         <thead>
           <tr className="bg-gray-200">
-            <th className="py-2 px-4 border-b">ID</th>
+            {/* <th className="py-2 px-4 border-b">ID</th> */}
             <th className="py-2 px-4 border-b">Browser</th>
-            <th className="py-2 px-4 border-b">Event</th>
+            {/* <th className="py-2 px-4 border-b">Event</th> */}
             <th className="py-2 px-4 border-b">Host</th>
-            <th className="py-2 px-4 border-b">Pid</th>
-            <th className="py-2 px-4 border-b">Session</th>
-            <th className="py-2 px-4 border-b">Terminal</th>
+            {/* <th className="py-2 px-4 border-b">Pid</th> */}
+            {/* <th className="py-2 px-4 border-b">Session</th> */}
+            {/* <th className="py-2 px-4 border-b">Terminal</th> */}
             <th className="py-2 px-4 border-b">Time</th>
             <th className="py-2 px-4 border-b">Title</th>
             <th className="py-2 px-4 border-b">Url</th>
@@ -69,16 +69,25 @@ const LogView = () => {
         <tbody>
           {paginatedData.map((item) => (
             <tr key={item.id} className="hover:bg-gray-100">
-              <td className="py-2 px-4 border-b">{item.id}</td>
+              {/* <td className="py-2 px-4 border-b">{item.id}</td> */}
               <td className="py-2 px-4 border-b">{item.browser}</td>
-              <td className="py-2 px-4 border-b">{item.event}</td>
+              {/* <td className="py-2 px-4 border-b">{item.event}</td> */}
               <td className="py-2 px-4 border-b">{item.host}</td>
-              <td className="py-2 px-4 border-b">{item.pid}</td>
-              <td className="py-2 px-4 border-b">{item.session}</td>
-              <td className="py-2 px-4 border-b">{item.terminal}</td>
+              {/* <td className="py-2 px-4 border-b">{item.pid}</td> */}
+              {/* <td className="py-2 px-4 border-b">{item.session}</td> */}
+              {/* <td className="py-2 px-4 border-b">{item.terminal}</td> */}
               <td className="py-2 px-4 border-b">{item.time}</td>
-              <td className="py-2 px-4 border-b">{item.title}</td>
-              <td className="py-2 px-4 border-b">{item.url}</td>
+              <td className="py-2 px-4 border-b">
+                <p className="break-all">
+                  {item.title}
+                </p>
+              </td>
+              <td className="py-2 px-4 border-b">
+                  <p className="break-all">
+                      {item.url}
+                  </p>
+              </td>
+                
               <td className="py-2 px-4 border-b">{item.user}</td>
             </tr>
           ))}

@@ -3,6 +3,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
 from config import Config
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+import psycopg2
 
 app = Flask(__name__)
 # Set the SQLALCHEMY_DATABASE_URI
@@ -12,6 +13,22 @@ app.config['JWT_SECRET_KEY'] = '@lis.159654'  # Change this to a random secret k
 db = SQLAlchemy(app)
 jwt = JWTManager(app)
 CORS(app)
+
+# Database connection details
+DB_HOST = "localhost"
+DB_NAME = "api"
+DB_USER = "postgres"
+DB_PASS = "Masterisbest120"
+
+def get_db_connection():
+    conn = psycopg2.connect(
+        host=DB_HOST,
+        database=DB_NAME,
+        user=DB_USER,
+        password=DB_PASS
+    )
+    return conn
+
 
 class Users(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -48,7 +65,6 @@ class api(db.Model):
         self.url = url
         self.user = user
 
-users = {"user@example.com": "password123"}  # Sample user data
 
 @app.route('/login', methods=['POST'])
 @cross_origin(supports_credentials=True)
@@ -57,12 +73,33 @@ def login():
     password = request.json.get('password', None)
     
     # Verify the email and password
-    if email != 'test@example.com' or password != 'password':
+    if email != 'emami.javad@alis.ir' or password != 'master':
         return jsonify({'msg': 'Invalid email or password'}), 401
     
     access_token = create_access_token(identity=email)
     return jsonify({'access_token': access_token})
 
+
+@app.route('/data', methods=['GET'])
+def get_data():
+    conn = get_db_connection()
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM api")
+
+    rows = cur.fetchall()
+
+    column_names = [desc[0] for desc in cur.description]
+
+    results = []
+    for row in rows:
+        results.append(dict(zip(column_names, row)))
+
+    
+    cur.close()
+    conn.close()
+
+    return jsonify(results)
 
 
 
